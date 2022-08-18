@@ -16,7 +16,9 @@ void Generator::generate_number(Value* v) {
     txt.append(buffer, length);
 }
 void Generator::generate_string(Value* v) {
+    txt += '"';
     txt += v->get_string();
+    txt += '"';
 }
 void Generator::generate_array(Value* v) {
     txt += '[';
@@ -24,10 +26,9 @@ void Generator::generate_array(Value* v) {
         generate_value(it);
         txt += ',';
     }
-    txt.pop_back();
-    // if (!v->get_array().empty()) {
-    //     txt.pop_back();
-    // }
+    if (!v->get_array().empty()) {
+        txt.pop_back();
+    }
     txt += ']';
 }
 void Generator::generate_object(Value* v) {
@@ -40,7 +41,9 @@ void Generator::generate_object(Value* v) {
         generate_value(it.second);
         txt += ',';
     }
-    txt.pop_back();
+    if (!v->get_object().empty()) {
+        txt.pop_back();
+    }
     txt += '}';
 }
 void Generator::generate_value(Value* v) {
